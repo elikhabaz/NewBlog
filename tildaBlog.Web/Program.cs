@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using tildaBlog.DataLayer.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+// Register the BlogContext with dependency injection
+builder.Services.AddDbContext<BlogContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 var app = builder.Build();
 
