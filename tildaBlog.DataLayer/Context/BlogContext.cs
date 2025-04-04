@@ -20,5 +20,16 @@ namespace tildaBlog.DataLayer.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<PostComment> PostComments { get; set; }
 
+
+        ///I Used this Script For delete table 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(s => s.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
 }
