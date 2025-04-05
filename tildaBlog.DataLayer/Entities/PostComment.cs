@@ -8,15 +8,13 @@ using System.Threading.Tasks;
 
 namespace tildaBlog.DataLayer.Entities
 {
-    public class PostComment
+    public class PostComment: BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
+        
         public int PostId { get; set; }
         public int UserId { get; set; }
 
-        [Required]
-        public string Text { get; set; }
+        public required string Text { get; set; }
 
         [ForeignKey("PostId")]
         public Post Post { get; set; }

@@ -7,14 +7,11 @@ using System.Threading.Tasks;
 
 namespace tildaBlog.DataLayer.Entities
 {
-    public class Category
+    public class Category: BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        public string Title { get; set; }
-        [Required]
-        public string Slug  { get; set; }
+       
+        public required string Title { get; set; }
+        public required string Slug  { get; set; }
         public string Metatag { get; set; }
         public string Metadescription { get; set; }
 

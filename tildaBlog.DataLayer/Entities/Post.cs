@@ -8,22 +8,17 @@ using System.Threading.Tasks;
 
 namespace tildaBlog.DataLayer.Entities
 {
-    public class Post
+    public class Post: BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
 
         //whose write it we should prepare the UserId From User
         public int UserId { get; set; }
         public int CategoryId { get; set; }
 
 
-        [Required]
-        public string Title { get; set; }
-        [Required]
-        public string Slug { get; set; }
-        [Required]
-        public string Description { get; set; }
+        public required string Title { get; set; }
+        public required string Slug { get; set; }
+        public required string Description { get; set; }
         public int Visit { get; set; }
 
 

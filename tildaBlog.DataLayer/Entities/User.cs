@@ -7,17 +7,12 @@ using System.Threading.Tasks;
 
 namespace tildaBlog.DataLayer.Entities
 {
-    public class User
+    public class User: BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        public string Username { get; set; }
-        [Required]
-        public string Fullname { get; set; }
-        [Required]
-        public string Password { get; set; }
+       
+        public required string Username { get; set; }
+        public required string Fullname { get; set; }
+        public required string Password { get; set; }
         public UserRole Role { get; set; }
 
         public ICollection<Post> Posts { get; set; }
