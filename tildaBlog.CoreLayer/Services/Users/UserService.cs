@@ -14,7 +14,8 @@ namespace tildaBlog.CoreLayer.Services.Users
     {
         private readonly BlogContext _context;
 
-        public UserService(BlogContext context) {
+        public UserService(BlogContext context)
+        {
 
             _context = context;
 
@@ -22,21 +23,22 @@ namespace tildaBlog.CoreLayer.Services.Users
         public OperationResult RegisterUser(UserRegisterDto registerDto)
         {
             //_context.Users.Any(u=>u.Username==registerDto.Username) check if username == userexist in db you cant add the user
-            var isFullNameExist = _context.Users.Any(u=>u.Username==registerDto.Username);
-            if (isFullNameExist) {
+            var isFullNameExist = _context.Users.Any(u => u.Username == registerDto.Username);
+            if (isFullNameExist)
                 return OperationResult.Error("کاربر در سیستم موجود ایت");
 
-                _context.Users.Add(entity: new User()
-                {
-                    Fullname = registerDto.Username,
-                    IsDeleted = false,
-                    Username = registerDto.Username,
-                    Role=UserRole.User,
-                    CreationDate = DateTime.Now,
-                    Password=registerDto.Password
-                });
-                return OperationResult.Success("مشخصات با موفقیت درج شد");
-        }
+            _context.Users.Add(entity: new User()
+            {
+                Fullname = registerDto.Username,
+                IsDeleted = false,
+                Username = registerDto.Username,
+                Role = UserRole.User,
+                CreationDate = DateTime.Now,
+                Password = registerDto.Password
+            });
+            return OperationResult.Success("مشخصات با موفقیت درج شد");
 
+
+        }
     }
 }
