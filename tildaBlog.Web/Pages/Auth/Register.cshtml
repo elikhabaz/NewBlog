@@ -1,18 +1,18 @@
 ﻿@page
-@model tildaBlog.Web.Pages.Auth.IndexModel
+@model tildaBlog.Web.Pages.Auth.RegisterModel
 @{
     Layout = "shared/_AuthLayout";
 }
-<form action="">
+<form action="" method="post">
     <h1>ثبت نام</h1>
     <div>
-        <input type="text" placeholder="نام کاربری" required="" id="username" />
+        <input type="text" asp-for="UserName" placeholder="نام کاربری" required="" id="username" />
     </div>
     <div>
-        <input type="text" placeholder="نام و نام خانوادگی" required="" id="username" />
+        <input type="text" asp-for="FullName" placeholder="نام و نام خانوادگی" required=""  />
     </div>
     <div>
-        <input type="password" placeholder="کلمه عبور" required="" id="password" />
+        <input type="password" asp-for="Password" placeholder="کلمه عبور" required="" id="password" />
     </div>
     <div>
         <input type="submit" value="ثبت نام" />

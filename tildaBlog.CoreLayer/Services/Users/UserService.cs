@@ -25,20 +25,33 @@ namespace tildaBlog.CoreLayer.Services.Users
             //_context.Users.Any(u=>u.Username==registerDto.Username) check if username == userexist in db you cant add the user
             var isFullNameExist = _context.Users.Any(u => u.Username == registerDto.Username);
             if (isFullNameExist)
-                return OperationResult.Error("کاربر در سیستم موجود ایت");
+                return OperationResult.Error("کاربر در سیستم موجود است");
 
+            var HashPass = registerDto.Password.EncodeToMd5();
             _context.Users.Add(entity: new User()
             {
-                Fullname = registerDto.Username,
+                Fullname = registerDto.Fullname,
                 IsDeleted = false,
                 Username = registerDto.Username,
                 Role = UserRole.User,
                 CreationDate = DateTime.Now,
-                Password = registerDto.Password
+                Password = HashPass
             });
+            _context.SaveChanges();
             return OperationResult.Success("مشخصات با موفقیت درج شد");
 
 
         }
+        public OperationResult LoginUser(UserLoginDto loginDto) {
+            var passwordHash = loginDto.Password.EncodeToMd5(); 
+            var IsexsistUser = _context.Users.Any(u => u.Username == loginDto.Username && u.Password== passwordHash);
+            if(IsexsistUser == false)
+                return OperationResult.NotFound();
+
+
+            return OperationResult.Success("کاربر با موفقیت وارد شد");
+
+        }
+
     }
 }

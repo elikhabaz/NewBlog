@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using tildaBlog.CoreLayer.Services.Users;
 using tildaBlog.DataLayer.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,10 @@ builder.Services.AddRazorPages();
 // Register the BlogContext with dependency injection
 builder.Services.AddDbContext<BlogContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+///all of My services
+var services = builder.Services;
+services.AddScoped<IUserService, UserService>();
 
 
 var app = builder.Build();
