@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using tildaBlog.CoreLayer.Services.DTOs.Users;
 using tildaBlog.CoreLayer.Services.Users;
 using tildaBlog.CoreLayer.Utilities;
@@ -37,16 +40,27 @@ namespace tildaBlog.Web.Pages.Auth
 
         public IActionResult OnPost()
         {
-            var result = _userService.LoginUser( new UserLoginDto() {
+            var user = _userService.LoginUser( new UserLoginDto() {
                 Username = UserName,
                 Password = Password
             });
 
-            if (result.Status == OperationResultStatus.NotFound)
+            if (user==null)
             {
                 ModelState.AddModelError("UserName", "کاربر وجود ندارد");
                 return Page();
             }
+            //I want login the User in our system
+            List<Claim> claims = new List<Claim>() { 
+                new Claim(ClaimTypes.NameIdentifier,user.UserId.ToString()),
+                new Claim(ClaimTypes.Name,user.Fullname),
+            };
+            var identity = new ClaimsIdentity(claims , CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimPrinciple = new ClaimsPrincipal(identity);
+            var properties = new AuthenticationProperties() { 
+                IsPersistent = true
+            };
+            HttpContext.SignInAsync(claimPrinciple);
             return RedirectToPage("../Index");
             
         }

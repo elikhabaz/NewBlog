@@ -42,14 +42,23 @@ namespace tildaBlog.CoreLayer.Services.Users
 
 
         }
-        public OperationResult LoginUser(UserLoginDto loginDto) {
+        public UserDto LoginUser(UserLoginDto loginDto) {
+
             var passwordHash = loginDto.Password.EncodeToMd5(); 
-            var IsexsistUser = _context.Users.Any(u => u.Username == loginDto.Username && u.Password== passwordHash);
-            if(IsexsistUser == false)
-                return OperationResult.NotFound();
 
+            var user = _context.Users.FirstOrDefault(u => u.Username == loginDto.Username && u.Password== passwordHash);
+           
+            if(user == null)
+                return null;
 
-            return OperationResult.Success("کاربر با موفقیت وارد شد");
+            var UserDTO = new UserDto(){
+                Fullname = user.Username,
+                Password = user.Password,
+                Username= user.Username,
+                CreationDate= user.CreationDate,
+                UserId=user.Id,
+            };
+            return UserDTO;
 
         }
 
