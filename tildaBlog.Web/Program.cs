@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using tildaBlog.CoreLayer.Services.Users;
 using tildaBlog.DataLayer.Context;
@@ -6,9 +8,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
 // Register the BlogContext with dependency injection
 builder.Services.AddDbContext<BlogContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+///add cookieAuth for Users
+builder.Services.AddAuthentication(option => { 
+    option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    option.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+    .AddCookie(options =>
+    {
+        options.LoginPath="/Auth/Login";
+        options.LogoutPath = "/Auth/Logout";
+        options.ExpireTimeSpan= TimeSpan.FromDays(30);
+    });
+
+
 
 ///all of My services
 var services = builder.Services;
@@ -31,8 +49,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapDefaultControllerRoute();
 
 app.Run();
